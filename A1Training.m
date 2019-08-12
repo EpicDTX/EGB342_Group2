@@ -38,6 +38,31 @@ load('A1Data.mat','msg','fs','st1','st2','st3');
 %==========================================================================
 % Enter your code below this line:
 %==========================================================================
+%% Part 1 Variables
+
+% Carrier frequency
+% fc1 = ;
+
+% Carrier
+% c1 = ;
+
+% Message
+% m1 = ;
+
+% Frequency sensitivity factor
+kf1 = 60000;
+
+% Modulated signal (time domain)
+% y1 = ;
+
+% Modulated signal (frequency domain) - Fourier transform only
+% Y1 = ;
+
+% Modulation index
+% beta1 = ;
+
+% Peak frequency deviation
+% Df1 = ;
 
 %% (a) 
 % Download the "Assignment1.zip" files and unzip all the content into a 
@@ -60,21 +85,23 @@ load('A1Data.mat','msg','fs','st1','st2','st3');
 % Identify any important features of the signal.
 %==========================================================================
 
-% Time vector
+% Building a Time Vector
+
+% Length of msg
 samples = length(msg);
-t2 = linspace(0,0.15,samples+1); t2 = t2(1:end-1);
 
-% Frequency vector
-Ts = t2(2)-t2(1);
-fs = 1/Ts;
-f = linspace(-fs/2,fs/2,length(t2)+1); f = f(1:end-1);
+% Time sample
+Ts = 1/fs;
 
-% Plot FM signal in time domain
+% Time vector
+t2 = linspace(0,0.72,samples+1); t2 = t2(1:end-1);
+
+Ts2 = t2(2)-t2(1);
+
+% Plot signal in Time Domain
 figure(1)
-plot(t2,msg)
-title('FM signal in time domain')
-legend('Equation','fmmod()')
-xlabel('Time (s)'), ylabel('Amplitude'), grid minor
+plot(t2, msg)
+
 
 %% d)
 % Estimate the bandwidth of the given message using the spectrum plot and 
@@ -105,7 +132,7 @@ xlabel('Time (s)'), ylabel('Amplitude'), grid minor
 %==========================================================================
 
 % Calling 'channel.p'
-[msg_rx] = channel(msg);
+%[msg_rx] = channel(msg);
 
 %% f) 
 % Estimate the maximum frequency sensitivity factor and the corresponding 

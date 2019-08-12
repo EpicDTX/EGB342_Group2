@@ -38,6 +38,31 @@ load('A1Data.mat','msg','fs','st1','st2','st3');
 %==========================================================================
 % Enter your code below this line:
 %==========================================================================
+%% Part 1 Variables
+
+% Carrier frequency
+% fc1 = ;
+
+% Carrier
+% c1 = ;
+
+% Message
+% m1 = ;
+
+% Frequency sensitivity factor
+kf1 = 60000;
+
+% Modulated signal (time domain)
+% y1 = ;
+
+% Modulated signal (frequency domain) - Fourier transform only
+% Y1 = ;
+
+% Modulation index
+% beta1 = ;
+
+% Peak frequency deviation
+% Df1 = ;
 
 %% (a) 
 % Download the "Assignment1.zip" files and unzip all the content into a 
@@ -62,19 +87,11 @@ load('A1Data.mat','msg','fs','st1','st2','st3');
 
 % Time vector
 samples = length(msg);
-t2 = linspace(0,0.15,samples+1); t2 = t2(1:end-1);
-
+t2 = linspace(0:samples)/ts;
 % Frequency vector
-Ts = t2(2)-t2(1);
-fs = 1/Ts;
-f = linspace(-fs/2,fs/2,length(t2)+1); f = f(1:end-1);
-
-% Plot FM signal in time domain
-figure(1)
-plot(t2,msg)
-title('FM signal in time domain')
-legend('Equation','fmmod()')
-xlabel('Time (s)'), ylabel('Amplitude'), grid minor
+% Time sample
+Ts = 1/fs;
+%Ts2 = t2(2)-t2(1);
 
 %% d)
 % Estimate the bandwidth of the given message using the spectrum plot and 
@@ -105,7 +122,7 @@ xlabel('Time (s)'), ylabel('Amplitude'), grid minor
 %==========================================================================
 
 % Calling 'channel.p'
-[msg_rx] = channel(msg);
+%[msg_rx] = channel(msg);
 
 %% f) 
 % Estimate the maximum frequency sensitivity factor and the corresponding 
@@ -153,8 +170,8 @@ xlabel('Time (s)'), ylabel('Amplitude'), grid minor
 
 %% l)
 % Plot and verify that your signal is within the selected frequency band. 
-% Comment on any out of band radiation observed and discuss measures you can 
-% take to remove out-of-band radiation.
+% Comment on any out of band radiation observed and discuss measures you 
+% can take to remove out-of-band radiation.
 %==========================================================================
 
 %% m)
@@ -163,8 +180,8 @@ xlabel('Time (s)'), ylabel('Amplitude'), grid minor
 %==========================================================================
 
 %% n)
-% Describe the demodulation process of FM signal and show how you can implement 
-% FM demodulation in MATLAB.
+% Describe the demodulation process of FM signal and show how you can 
+% implement FM demodulation in MATLAB.
 
 %% o)
 % Demodulate the signal using the provided function and store the result in 
@@ -180,7 +197,7 @@ xlabel('Time (s)'), ylabel('Amplitude'), grid minor
 %% p)
 % You have now finished testing the system. If the transmission has been 
 % performed successfully the monitoring string should consist of a message 
-% string concatenated with student numbers of the group members and FRAS-342x 
-% appended to the end.
+% string concatenated with student numbers of the group members and 
+% FRAS-342x appended to the end.
 % 
 % What was the decoded message?
