@@ -116,11 +116,23 @@ f2(end) = [];
 
 MSG = fft(msg);
 figure(2)
+subplot(2, 1, 1)
 plot(f2, abs(fftshift(MSG))/fs,'r')
 xlabel('Frequency[Hz]') 
 ylabel('Magnitude')
 title('Magnitude Spectrum of MSG')
 xlim([-1000 1000])
+subplot(2, 1, 2)
+plot(f2, abs(fftshift(MSG))/fs,'r')
+xlabel('Frequency[Hz]') 
+ylabel('Magnitude')
+title('Magnitude Spectrum of MSG (last peak)')
+xlim([695 705])
+
+% Using the magnitude spectrum of msg, bandwidth is from 0Hz to around 
+%   705Hz, only the positive frquencies are considered.
+% Estimated bandwidth
+BW_MSG = 705; %Hz
 
 %% e)
 % Testing the FM system requires that a suitable carrier frequency be 
