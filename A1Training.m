@@ -139,11 +139,11 @@ BW_MSG = 705; %Hz
 % chosen. The nature of the transmission channel dictates the choice of 
 % this frequency. The channel has been saved into your current working 
 % directory in the file channel.p. This channel behaves as a linear time 
-% invariant (LTI) system. It takes one input msg tx and produces one output 
-% msg rx. Think of the output as being a distorted version (channel induced 
+% invariant (LTI) system. It takes one input msg_tx and produces one output 
+% msg_rx. Think of the output as being a distorted version (channel induced 
 % distortions) of the input signal. The syntax of using the channel is:
 % 
-% [msg rx] = channel(msg tx);
+% [msg_rx] = channel(msg_tx);
 % 
 % Determine the frequency response of the channel using the impulse 
 % response and identify suitable frequency band to transmit your message 
@@ -156,12 +156,12 @@ BW_MSG = 705; %Hz
 % longer than two pages.
 %==========================================================================
 
-% Calling 'channel.p'
-%[msg_rx] = channel(msg);
+% Frequency response
+
 
 %% f) 
 % Estimate the maximum frequency sensitivity factor and the corresponding 
-% modulation index beta2 to transmit the given message withing the selected 
+% modulation index beta2 to transmit the given message within the selected 
 % band.
 %==========================================================================
 
@@ -173,12 +173,12 @@ BW_MSG = 705; %Hz
 
 
 %% h)
-% Create a MATLAB function fm mod to contain your frequency modulation 
+% Create a MATLAB function fm_mod to contain your frequency modulation 
 % function. The function header is to conform to the following syntax:
 % 
-% function [msg tx] = fm mod(msg, fc2, fs, Df2);
+% function [msg_tx] = fm_mod(msg, fc2, fs, Df2);
 % 
-% Where msg tx is the modulated signal, msg is the signal to be modulated, 
+% Where msg_tx is the modulated signal, msg is the signal to be modulated, 
 % fc2 is the carrier frequency (in Hz), fs is the sampling frequency 
 % (in Hz), and Df2 is the peak frequency deviation.
 
@@ -189,7 +189,7 @@ BW_MSG = 705; %Hz
 
 %% j) 
 % You are now at a stage to test your system. Take the baseband signal msg 
-% and modulate this signal with the fm mod function. Store the modulated 
+% and modulate this signal with the fm_mod function. Store the modulated 
 % signal in the variable msg_tx.
 %==========================================================================
 
@@ -222,7 +222,7 @@ BW_MSG = 705; %Hz
 % Demodulate the signal using the provided function and store the result in 
 % msg rc:
 % 
-% [msg rc] = fm demod(msg rx, fc2, fs, Df2);
+% [msg_rc] = fm demod(msg_rx, fc2, fs, Df2);
 % 
 % Note that this demodulation function also decodes an emergency message 
 % contained within the signal.
