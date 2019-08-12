@@ -103,6 +103,7 @@ plot(t2, msg)
 title("msg in Time Domain")
 xlabel("t[s]")
 ylabel("Amplitude[Hz]")
+xlim([0 72]) % Range of sampling period
 
 %% d)
 % Estimate the bandwidth of the given message using the spectrum plot and 
