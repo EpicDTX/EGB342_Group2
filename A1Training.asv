@@ -1,4 +1,4 @@
-%% Assignment 1 Template 
+%% Assignment 1 
 %  Run the GenerateAssignment1Data.m script if you have not already done
 %  so.
 clear all, close all, clc % clearing and preparing a clean workspace.
@@ -90,18 +90,19 @@ kf1 = 60000;
 % Length of msg
 samples = length(msg);
 
-% Time sample
-Ts = 1/fs;
+% Sampling Period
+Ts = samples/fs;
 
 % Time vector
-t2 = linspace(0,0.72,samples+1); t2 = t2(1:end-1);
-
-Ts2 = t2(2)-t2(1);
+t2 = linspace(0,Ts,samples+1); %72 secsonds
+t2(end) = [];
 
 % Plot signal in Time Domain
 figure(1)
 plot(t2, msg)
-
+title('msg in Time Domain')
+xlabel('t[s]')
+ylabel('Amplitude[Hz]')
 
 %% d)
 % Estimate the bandwidth of the given message using the spectrum plot and 
@@ -109,6 +110,41 @@ plot(t2, msg)
 % bandwidth.
 %==========================================================================
 
+f2 = linspace(-fs/2, fs/2, length(t2)+1);
+f2(end) = [];
+
+MSG = fft(msg);
+figure(2)
+plot(f2, abs(fftshift(MSG))/fs,'r')
+xlabel('Frequency[Hz]') 
+ylabel('Magnitude')
+title('Magnitude Spectrum of MSG')
+xlim([-1000 1000])
+
+% Finding the peaks and their location
+[peaks, locations] = findpeaks(MUX_shift, k, ...
+    'MinPeakHeight', 6, 'NPeaks', );
+% Frequency shifts (vector) for positive frequencies
+freqshift = round(locations(locations>=0));
+
+% Finding the magnitude and phase of peaks
+for i = 1:length(freqshift)
+    %Finding the index of the frequency of the peak
+    index(i) = find(k == freqshift(i));
+    %Magnitude of peaks
+    MagSpec(i) = abs(MUX_shift(index(i)));
+    %Phase of peaks
+    PhaseSpec(i) = angle(MUX_shift(index(i)));
+end
+
+% Plotting Peaks with MUX
+figure(), hold on
+plot(k, MUX_shift)
+xlabel('Frequency')
+ylabel('Magnitude')
+title('Peaks in Magnitude Spectrum of MUX')
+plot(freqshift, MagSpec, 'ro')
+legend('MUX','Peaks');
 %% e)
 % Testing the FM system requires that a suitable carrier frequency be 
 % chosen. The nature of the transmission channel dictates the choice of 

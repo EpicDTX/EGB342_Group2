@@ -119,6 +119,9 @@ figure(2)
 plot(f2, abs(fftshift(MSG))/fs,'r')
 xlabel('Frequency[Hz]') 
 ylabel('Magnitude')
+title('Magnitude Spectrum of MSG')
+xlim([-1000 1000])
+
 %% e)
 % Testing the FM system requires that a suitable carrier frequency be 
 % chosen. The nature of the transmission channel dictates the choice of 
