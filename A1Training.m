@@ -157,8 +157,10 @@ BW_MSG = 705; %Hz
 %==========================================================================
 
 % Calling 'channel.p'
-%[msg_rx] = channel(msg);
+[msg_rx] = channel(msg);
 
+figure()
+plot(t2, msg_rx)
 %% f) 
 % Estimate the maximum frequency sensitivity factor and the corresponding 
 % modulation index beta2 to transmit the given message withing the selected 
