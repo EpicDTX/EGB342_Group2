@@ -104,7 +104,7 @@ title('Magnitude Spectrum of MSG (last peak)')
 xlim([695 705])
 
 % Using the magnitude spectrum of msg, bandwidth is from 0Hz to around 
-%   705Hz, only the positive frquencies are considered.
+% 705Hz, only the positive frquencies are considered.
 % Estimated bandwidth
 BW_MSG = 705; %Hz
 
