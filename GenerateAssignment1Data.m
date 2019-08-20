@@ -1,6 +1,4 @@
-<<<<<<< HEAD
 %% EGB342 - Assignment 1: GenerateAssignment1Data.m
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%$%%
 %  Clearing workspace
 clear all, close all, clc
 %
@@ -36,9 +34,7 @@ DataGen(st1,st2,st3); % do not modify this line.
 %  execution of the code.
 %
 %  The template.m file will load and work with the A1Data.mat file directly.
-=======
 %% EGB342 - Assignment 1: GenerateAssignment1Data.m
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%$%%
 %  Clearing workspace
 clear all, close all, clc
 %
@@ -74,5 +70,4 @@ DataGen(st1,st2,st3); % do not modify this line.
 %  execution of the code.
 %
 %  The template.m file will load and work with the A1Data.mat file directly.
->>>>>>> master
 %  You may close this script once A1Data.mat has been saved.

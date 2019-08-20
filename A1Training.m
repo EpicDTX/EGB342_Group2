@@ -38,32 +38,6 @@ load('A1Data.mat','msg','fs','st1','st2','st3');
 %==========================================================================
 % Enter your code below this line:
 %==========================================================================
-%% Part 1 Variables
-
-% Carrier frequency
-% fc1 = ;
-
-% Carrier
-% c1 = ;
-
-% Message
-% m1 = ;
-
-% Frequency sensitivity factor
-kf1 = 60000;
-
-% Modulated signal (time domain)
-% y1 = ;
-
-% Modulated signal (frequency domain) - Fourier transform only
-% Y1 = ;
-
-% Modulation index
-% beta1 = ;
-
-% Peak frequency deviation
-% Df1 = ;
-
 %% (a) 
 % Download the "Assignment1.zip" files and unzip all the content into a 
 % single working directory.
@@ -103,7 +77,7 @@ plot(t2, msg)
 title("msg in Time Domain")
 xlabel("t[s]")
 ylabel("Amplitude[Hz]")
-xlim([0 72]) % Range of sampling period
+xlim([0 Ts]) % Range of sampling period
 
 %% d)
 % Estimate the bandwidth of the given message using the spectrum plot and 
