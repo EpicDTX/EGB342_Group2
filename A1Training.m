@@ -38,16 +38,6 @@ load('A1Data.mat','msg','fs','st1','st2','st3');
 %==========================================================================
 % Enter your code below this line:
 %==========================================================================
-%% (a) 
-% Download the "Assignment1.zip" files and unzip all the content into a 
-% single working directory.
-
-%% (b)
-% Open the file GenerateAssignment1Data.m and carefully read the 
-% instructions supplied in the file. Enter first 7 digits of the student 
-% numbers in the specified variables and run the script. This script only 
-% needs to be executed once. Begin working from A1Training.m after 
-% A1Data.mat has been generated.
 
 %% c)
 % The signal that you will be using for testing the FM system is given in 
