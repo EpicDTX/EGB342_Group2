@@ -39,41 +39,33 @@ load('A1Data.mat','msg','fs','st1','st2','st3');
 % Enter your code below this line:
 %==========================================================================
 
-%% c)
-% The signal that you will be using for testing the FM system is given in 
-% the variable msg. This testing signal is identical to a monitoring signal 
-% that will be transmitted over the FM system. Generate the time vector 
-% corresponding to this signal and store it in the variable t2. Sampling 
-% frequency is given in the variable fs. Take care in constructing this 
-% correctly. Using this time vector, plot the signal in the time domain. 
-% Identify any important features of the signal.
-%==========================================================================
+% Student IDs:
+% 9934731
+% 10008373
+% 9994653
 
-% Building a Time Vector
+%% PART 1: FM Theory
 
-% Length of msg
-samples = length(msg);
+%% PART 2: FM Training
 
-% Sampling Period
-Ts = samples/fs;
+% c)
+
+% Time sample
+Ts = 1/fs;
 
 % Time vector
-t2 = linspace(0,Ts,samples+1); %72 secsonds
+t2 = linspace(0,length(msg)/fs, length(msg)+1); %72 seconds
 t2(end) = [];
 
 % Plot signal in Time Domain
 figure(1)
 plot(t2, msg)
 title("msg in Time Domain")
-xlabel("t[s]")
+xlabel("Time[s]")
 ylabel("Amplitude[Hz]")
-xlim([0 Ts]) % Range of sampling period
+xlim([0 72]) % Range of msg signal
 
-%% d)
-% Estimate the bandwidth of the given message using the spectrum plot and 
-% store it in the variable BW_MSG. Describe how you estimated the 
-% bandwidth.
-%==========================================================================
+% d)
 
 f2 = linspace(-fs/2, fs/2, length(t2)+1);
 f2(end) = [];
@@ -98,33 +90,24 @@ xlim([695 705])
 % Estimated bandwidth
 BW_MSG = 705; %Hz
 
-%% e)
-% Testing the FM system requires that a suitable carrier frequency be 
-% chosen. The nature of the transmission channel dictates the choice of 
-% this frequency. The channel has been saved into your current working 
-% directory in the file channel.p. This channel behaves as a linear time 
-% invariant (LTI) system. It takes one input msg tx and produces one output 
-% msg rx. Think of the output as being a distorted version (channel induced 
-% distortions) of the input signal. The syntax of using the channel is:
-% 
-% [msg rx] = channel(msg tx);
-% 
-% Determine the frequency response of the channel using the impulse 
-% response and identify suitable frequency band to transmit your message 
-% signal. Estimate the bandwidth of the selected frequency band.
-% 
-% Determine a suitable carrier frequency for this channel and store this 
-% value in variable fc2 as a value in Hz. Explain your process and fully 
-% justify your answer. Use suitable mathematical developments, code, and 
-% graphical assets to aid the justification. The response should be no 
-% longer than two pages.
-%==========================================================================
+% e)
 
-% Calling 'channel.p'
-[msg_rx] = channel(msg);
+% Empty signal vector
+pulse = zeros(1, length(msg));
+% Pulse of frame 1
+pulse(1) = 1;
+% channel.p applied
+msg_pulse = channel(pulse);
+% Clean 
+MSG_PULSE = abs(fftshift(fft(msg_pulse)))/fs;
 
-figure()
-plot(t2, msg_rx)
+figure(3), clf                 
+plot(f2, MSG_PULSE)      
+title('1 Frame Pulse'), grid minor
+xlabel('Frequency (Hz)'), ylabel('Amplitude')
+
+
+
 %% f) 
 % Estimate the maximum frequency sensitivity factor and the corresponding 
 % modulation index beta2 to transmit the given message withing the selected 
