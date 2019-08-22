@@ -46,23 +46,44 @@ load('A1Data.mat','msg','fs','st1','st2','st3');
 
 %% PART 1: FM Theory
 
+% Time vector
+samples = 1e5;
+t1 = linspace(0,200,3*samples+1); 
+t1(end) = [];
+
+% Frequency vector
+Ts = t1(2)-t1(1);
+fs1 = 1/Ts;
+f1 = linspace(-fs1/2,fs1/2,length(t1)+1); 
+f1(end) = [];
+
+% Defining some frequency modulation parameters.
+fc1 = 450e6;    % Carrier frequency
+fm = 15e3;      % Message frequency
+kf1 = 60e3;     % Frequency sensitivity
+Ac = 10;        % Carrier amplitude
+Am = 1;         % Message amplitude
+
+% FM Modulation
+m1 = Am*cos(2*pi*fm*t1);                    % Message signal
+x_int = cumsum(m1)*Ts;                      % Integral term
+y1 = Ac*cos(2*pi*fc1*t1+2*pi*kf1*x_int);    % Modulated signal
+Y1 = fft(y1);                               % Modulated signal (FT)
+
 %% PART 2: FM Training
 
 % c)
-
-% Time sample
-Ts = 1/fs;
 
 % Time vector
 t2 = linspace(0,length(msg)/fs, length(msg)+1); %72 seconds
 t2(end) = [];
 
 % Plot signal in Time Domain
-figure(1)
+figure
 plot(t2, msg)
 title("msg in Time Domain")
 xlabel("Time[s]")
-ylabel("Amplitude[Hz]")
+ylabel("Amplitude")
 xlim([0 72]) % Range of msg signal
 
 % d)
@@ -71,7 +92,7 @@ f2 = linspace(-fs/2, fs/2, length(t2)+1);
 f2(end) = [];
 
 MSG = fft(msg);
-figure(2)
+figure
 subplot(2, 1, 1)
 plot(f2, abs(fftshift(MSG))/fs,'r')
 xlabel('Frequency[Hz]') 
@@ -101,7 +122,7 @@ msg_pulse = channel(pulse);
 % Clean 
 MSG_PULSE = abs(fftshift(fft(msg_pulse)))/fs;
 
-figure(3), clf                 
+figure, clf                 
 plot(f2, MSG_PULSE)      
 title('1 Frame Pulse'), grid minor
 xlabel('Frequency (Hz)'), ylabel('Amplitude')
