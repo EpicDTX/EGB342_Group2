@@ -45,6 +45,7 @@ load('A1Data.mat','msg','fs','st1','st2','st3');
 % 9994653
 
 %% PART 1: FM Theory
+%% 1a) - Setup proposed radio link
 
 % Time vector
 samples = 1e5;
@@ -63,6 +64,8 @@ fm = 15e3;      % Message frequency
 kf1 = 60e3;     % Frequency sensitivity
 Ac = 10;        % Carrier amplitude
 Am = 1;         % Message amplitude
+
+%% 1b) - Modulated signal expression
 
 % FM Modulation
 m1 = Am*cos(2*pi*fm*t1);                    % Message signal
@@ -83,7 +86,8 @@ ylim([0,5])
 Df1 = kf1*Am;           % Frequency deviation
 beta1 = (kf1*Am)/fm;    % Modulation index
 
-% Determine no. of side-bands to contain 98% modulated signal power
+%% 1c) - Sidebands
+
 R = 1;                % Assume R = 1 Ohm
 P_total = Ac^2/(2*R); % 50W
 P_carrier = (Ac*besselj(0, beta1))^2/(2*R);
@@ -96,7 +100,8 @@ while efficiency <= 0.98
     efficiency = P_sb/P_sbtotal;
 end
 
-% Plot of the corresponding magnitude spectrum
+%% 1d) - Magnitude spectrum
+
 y1_selected = 0; % Intialise 
 for n = -Num_sb:1:Num_sb
     y1_selected = y1_selected + Ac*besselj(n,beta1)*cos(2*pi*(fc1 + n*fm)*t1);
@@ -111,13 +116,13 @@ xlabel('Frequency[Hz]'), ylabel('Magnitude')
 xlim([-1e5,1e5]), grid minor
 ylim([0,5])
 
-% Estimate bandwidth of modulated signal
+%% 1e) - Estimate bandwidth of modulated signal
+
 BW_Theory = 2*(beta1 + 1)*fm;   % Theoretical bandwidth
 BW_Estimate = obw(y1,fs1);      % Bandwidth estimation 
 
 %% PART 2: FM Training
-
-% c)
+%% 2c) - Inspect testing signal
 
 % Time vector
 t2 = linspace(0,length(msg)/fs, length(msg)+1); %72 seconds
@@ -131,7 +136,7 @@ xlabel("Time[s]")
 ylabel("Amplitude")
 xlim([0 72]) % Range of msg signal
 
-% d)
+%% 2d) - Estimate bandwidth
 
 f2 = linspace(-fs/2, fs/2, length(t2)+1);
 f2(end) = [];
@@ -156,7 +161,7 @@ xlim([695 705])
 % Estimated bandwidth
 BW_MSG = 705; %Hz
 
-% e)
+%% 2e) - Choosing a carrier frequency
 
 % Empty signal vector
 pulse = zeros(1, length(msg));
@@ -172,82 +177,44 @@ plot(f2, MSG_PULSE)
 title('1 Frame Pulse'), grid minor
 xlabel('Frequency (Hz)'), ylabel('Amplitude')
 
+%% 2f) - Frequency sensitivity factor and modulation index
 
 
-%% f) 
-% Estimate the maximum frequency sensitivity factor and the corresponding 
-% modulation index beta2 to transmit the given message withing the selected 
-% band.
-%==========================================================================
+%% 2g) - Theoretical bandwidth and peak frequency
 
 
-%% g) 
-% Calculate theoretical bandwidth of the FM signal and peak frequency 
-% deviation of the modulation, Df2. Store this value in BW_FM.
-%==========================================================================
+%% 2j) - Apply fm_mod
+
+% [msg_tx] = fm_mod(msg, fc2, fs, Df2)
+
+%% 2k) - Modulated signal in time/frequency domain
 
 
-%% h)
-% Create a MATLAB function fm mod to contain your frequency modulation 
-% function. The function header is to conform to the following syntax:
-% 
-% function [msg tx] = fm mod(msg, fc2, fs, Df2);
-% 
-% Where msg tx is the modulated signal, msg is the signal to be modulated, 
-% fc2 is the carrier frequency (in Hz), fs is the sampling frequency 
-% (in Hz), and Df2 is the peak frequency deviation.
-
-%% i) 
-% Write the body of the frequency modulation function. Do not use the 
-% inbuilt MATLAB integration function. Employ the MATLAB cumsum function 
-% instead. Remember to include the full function in your report.
-
-%% j) 
-% You are now at a stage to test your system. Take the baseband signal msg 
-% and modulate this signal with the fm mod function. Store the modulated 
-% signal in the variable msg_tx.
-%==========================================================================
-
-% Test function (When it is completed)
-%[msg_tx] = fm_mod(msg, fc2, fs, Df2);
-
-%% k)
-% Plot the modulated signal in the time and frequency domains. Compare 
-% these plots with that of the baseband signal. Examine the differences 
-% between the signals, and explain these differences in relation to theory. 
-% Comment on the accuracy of your bandwidth calculation.
-%==========================================================================
-
-%% l)
-% Plot and verify that your signal is within the selected frequency band. 
-% Comment on any out of band radiation observed and discuss measures you 
-% can take to remove out-of-band radiation.
-%==========================================================================
-
-%% m)
-% Transmit the modulated signal msg_tx through the channel using provided 
-% function transmit.p. Store the result in variable msg rx.
-%==========================================================================
-
-%% n)
-% Describe the demodulation process of FM signal and show how you can 
-% implement FM demodulation in MATLAB.
-
-%% o)
-% Demodulate the signal using the provided function and store the result in 
-% msg rc:
-% 
-% [msg rc] = fm demod(msg rx, fc2, fs, Df2);
-% 
-% Note that this demodulation function also decodes an emergency message 
-% contained within the signal.
-%==========================================================================
+%% 2l) - Verify signal within frequency band
 
 
-%% p)
-% You have now finished testing the system. If the transmission has been 
-% performed successfully the monitoring string should consist of a message 
-% string concatenated with student numbers of the group members and 
-% FRAS-342x appended to the end.
-% 
-% What was the decoded message?
+%% 2m) - Transmit modulated signal
+
+% [msg_rx] = channel(msg_tx);
+
+%% 2o) - Demodulate signal
+
+% [msg_rc] = fm_demod(msg rx, fc2, fs, Df2);
+
+%% PART 3: Radio-frequency Spectrum Measurements
+%% 3a) - Function listen_fm
+
+% MHz = 96.5;
+% listen_fm(MHz)
+
+%% 3c) - Spectrum analyser
+
+% 1. FM analog radio transmission
+
+% 2. Digital Audio Broadcasting (DAB)
+
+% 3. Digital Video Broadcasting (DVB)
+
+% 4. Mobile Frequencies
+
+% 5. Queensland Government Wireless Network (GWN)
