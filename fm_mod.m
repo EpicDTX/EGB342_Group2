@@ -3,17 +3,21 @@ function [msg_tx] = fm_mod(msg, fc2, fs, Df2)
 %the carrier frequency (Hz), fs being the sampling frequency (Hz) and Df2
 %as the peak frequency deviation.
 
-% Amplitude of carrier
+% Carrier amplitude
 Ac = 1;
 
-% % Sampling period
+% Time sample
 Ts = length(msg)/fs;
 
-% Integration using cumsum function
-x_int = cumsum(msg) * Ts;
+% Time vector
+t = linspace(0, Ts, length(msg)+1);
+t(end) = [];
 
-% Modulation equation
-msg_tx = Ac * cos(2 * pi * fc2 * t + 2 * pi * Df2 * x_int);
+% Integral term
+msg_int = cumsum(msg)*Ts;
+
+% Modulated signal output
+msg_tx = Ac*cos(2*pi*fc2*t + 2*pi*Df2*msg_int);
 
 end
 
