@@ -163,19 +163,8 @@ BW_MSG = 705; %Hz
 
 %% 2e) - Choosing a carrier frequency
 
-% Empty signal vector
-pulse = zeros(1, length(msg));
-% Pulse of frame 1
-pulse(1) = 1;
-% channel.p applied
-msg_pulse = channel(pulse);
-% Clean 
-MSG_PULSE = abs(fftshift(fft(msg_pulse)))/fs;
+% Frequency response
 
-figure, clf                 
-plot(f2, MSG_PULSE)      
-title('1 Frame Pulse'), grid minor
-xlabel('Frequency (Hz)'), ylabel('Amplitude')
 
 %% 2f) - Frequency sensitivity factor and modulation index
 
@@ -204,17 +193,21 @@ xlabel('Frequency (Hz)'), ylabel('Amplitude')
 %% PART 3: Radio-frequency Spectrum Measurements
 %% 3a) - Function listen_fm
 
-% MHz = 96.5;
-% listen_fm(MHz)
+% listen_fm(96.5);
 
 %% 3c) - Spectrum analyser
 
 % 1. FM analog radio transmission
+spectrum_sweep(87.5e6, 108e6, 3.2e6, 2^17,'FM analog radio transmission');
 
 % 2. Digital Audio Broadcasting (DAB)
+spectrum_sweep(202e6, 209e6, 3.2e6, 2^17, 'Digital Audio Broadcasting (DAB)');
 
 % 3. Digital Video Broadcasting (DVB)
+spectrum_sweep(520e6, 694e6, 3.2e6, 2^17, 'Digital Video Broadcasting (DVB)');
 
 % 4. Mobile Frequencies
+spectrum_sweep(820e6, 960e6, 3.2e6, 2^17, 'Mobile Frequencies');
 
 % 5. Queensland Government Wireless Network (GWN)
+spectrum_sweep(420e6, 430e6, 3.2e6, 2^17, 'GWN');
