@@ -174,7 +174,7 @@ BW_MSG = 705; %Hz
 
 %% 2j) - Apply fm_mod
 
-% [msg_tx] = fm_mod(msg, fc2, fs, Df2)
+% [msg_tx] = fm_mod(msg, fc2, fs, kf2)
 
 %% 2k) - Modulated signal in time/frequency domain
 
@@ -188,7 +188,7 @@ BW_MSG = 705; %Hz
 
 %% 2o) - Demodulate signal
 
-% [msg_rc] = fm_demod(msg rx, fc2, fs, Df2);
+% [msg_rc] = fm_demod(msg rx, fc2, fs, kf2);
 
 %% PART 3: Radio-frequency Spectrum Measurements
 %% 3a) - Function listen_fm
