@@ -193,21 +193,27 @@ BW_MSG = 705; %Hz
 %% PART 3: Radio-frequency Spectrum Measurements
 %% 3a) - Function listen_fm
 
-% listen_fm(96.5);
+% listen_fm(107.7);
 
 %% 3c) - Spectrum analyser
 
-% 1. FM analog radio transmission
-spectrum_sweep(87.5e6, 108e6, 3.2e6, 2^17,'FM analog radio transmission');
+% see spectrum_analyser.m
 
-% 2. Digital Audio Broadcasting (DAB)
-spectrum_sweep(202e6, 209e6, 3.2e6, 2^17, 'Digital Audio Broadcasting (DAB)');
+%% 3d) - Number of samples per frame effects
 
-% 3. Digital Video Broadcasting (DVB)
-spectrum_sweep(520e6, 694e6, 3.2e6, 2^17, 'Digital Video Broadcasting (DVB)');
+% FM analog radio transmission case
 
-% 4. Mobile Frequencies
-spectrum_sweep(820e6, 960e6, 3.2e6, 2^17, 'Mobile Frequencies');
+start_freq = 87.5e6;
+stop_freq = 108e6;
+rtlsdr_fs = 3.2e6;
 
-% 5. Queensland Government Wireless Network (GWN)
-spectrum_sweep(420e6, 430e6, 3.2e6, 2^17, 'GWN');
+number_samples1 = 2^17;
+number_samples2 = 2^10;
+number_samples3 = 2^4;
+
+%% let n = 17
+spectrum_sweep(start_freq, stop_freq, rtlsdr_fs, number_samples1,'FM, n = 17');
+%% let n = 9
+spectrum_sweep(start_freq, stop_freq, rtlsdr_fs, number_samples2,'FM, n = 10');
+%% let n = 3
+spectrum_sweep(start_freq, stop_freq, rtlsdr_fs, number_samples3,'FM, n = 3');
