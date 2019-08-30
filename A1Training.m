@@ -163,21 +163,68 @@ BW_MSG = 705; %Hz
 
 %% 2e) - Choosing a carrier frequency
 
-% Frequency response
+% Empty signal vector
+pulse = zeros(1, length(msg));
+% Pulse of frame 1
+pulse(1) = 1;
+% channel.p applied
+[msg_pulse] = channel(pulse);
+% Clean 
+MSG_PULSE = abs(fftshift(fft(msg_pulse)))/fs;
+
+figure, clf                 
+plot(f2, MSG_PULSE)      
+title('Frequency Response of Channel')%, grid minor
+xlabel('Frequency (Hz)'), ylabel('Amplitude')
+
+% the bandwith from the positive side is estimated to be 7633 and 1.648e4
+% therefore the bandwidth is 8847 Hz
+% The carrier frequency is the value that is in the middle of the bandwidth
+% which is 1.2057e4, therefore:
+
+%Selected Bnadwidth
+BW_EST = 8847;
+
+%Estimated Carrier Frequency
+fc2 = 1.2057e4;%Hz
 
 
 %% 2f) - Frequency sensitivity factor and modulation index
 
+%But we must estimate the maximum frequency sesitivity and then determine
+%the corresponding Modulation Index. 
+%beta2 = Df1/BW_MSG - the estimated message bandwidth is the denominator
+%used to find Modulation index.
+%This is used to transmit the hidden message 
+%within the selecting the selecting band. This modulation index is 
+%then used to calculate the Theoretical bandwidth.
+%to find beta2 = (W - 2*B)/(2*B)
+beta2 = (BW_EST - 2*BW_MSG)/(2*BW_MSG);
 
 %% 2g) - Theoretical bandwidth and peak frequency
-
+kf2 = beta2*BW_MSG;
+BW_FM = 2*(beta2 + 1)*BW_MSG;
 
 %% 2j) - Apply fm_mod
 
-% [msg_tx] = fm_mod(msg, fc2, fs, kf2)
+[msg_tx] = fm_mod(msg, fc2, fs, kf2);
 
 %% 2k) - Modulated signal in time/frequency domain
 
+MSG_TX = abs(fftshift(fft(msg_tx)))/fs;
+
+%Check on this - dont think this is right
+figure
+subplot(2,1,1)
+plot(t2, msg_tx)
+title("Modulated msg in Time Domain")
+xlabel("Time[s]")
+ylabel("Amplitude")
+subplot(2,1,2)
+plot(f2, MSG_TX)
+title("Modulated msg in Frequency Domain")
+xlabel("Frequency[Hz]")
+ylabel("Magnitude")
 
 %% 2l) - Verify signal within frequency band
 
