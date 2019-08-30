@@ -59,28 +59,27 @@ f1 = linspace(-fs1/2,fs1/2,length(t1)+1);
 f1(end) = [];
 
 % Defining some frequency modulation parameters
-fc1 = 450e6;    % Carrier frequency
-fm = 15e3;      % Message frequency
-kf1 = 60e3;     % Frequency sensitivity
-Ac = 10;        % Carrier amplitude
-Am = 1;         % Message amplitude
+fc1 = 4.5e8;     % Carrier frequency
+fm = 1.5e4;      % Message frequency
+kf1 = 6e4;       % Frequency sensitivity
+Ac = 10;         % Carrier amplitude
+Am = 1;          % Message amplitude
 
 %% 1b) - Modulated signal expression
 
 % FM Modulation
-m1 = Am*cos(2*pi*fm*t1);                    % Message signal
-x_int = cumsum(m1)*Ts;                      % Integral term
-y1 = Ac*cos(2*pi*fc1*t1+2*pi*kf1*x_int);    % Modulated signal
-Y1 = fft(y1);                               % Modulated signal (FT)
+m1 = Am*cos(2*pi*fm*t1);                     % Message signal
+x_int = cumsum(m1)./fs1;                     % Integral term
+y1 = Ac*cos(2*pi*fc1*t1+2*pi*kf1*x_int);     % Modulated signal
+Y1 = fft(y1);                                % Modulated signal (FT)
 
 % Plot modulated signal
 figure, clf
 subplot(1,2,1)
 stem(f1, abs(fftshift(Y1))/fs1, 'Marker', '.')
 title('Modulated Signal Y1 in Frequency Domain')
-xlabel('Frequency[Hz]'), ylabel('Magnitude')
-xlim([-1e5,1e5]), grid minor
-ylim([0,5])
+xlabel('Frequency[Hz]')
+ylabel('Magnitude')
 
 % Compute maximum frequency deviation and modulation index
 Df1 = kf1*Am;           % Frequency deviation
@@ -113,8 +112,7 @@ subplot(1,2,2)
 stem(f1,abs(fftshift(Y1_selected))/fs1, 'Marker', '.')
 title('Frequency modulated signal Y1 - selected harmonics')
 xlabel('Frequency[Hz]'), ylabel('Magnitude')
-xlim([-1e5,1e5]), grid minor
-ylim([0,5])
+
 
 %% 1e) - Estimate bandwidth of modulated signal
 
@@ -294,7 +292,7 @@ legend('Frequency Response [msg tx]', 'Modulated Signal')
 [msg_rx] = channel(msg_tx);
 
 %% 2o) - Demodulate signal
-[msg_rc] = fm_demod(msg_rx, fc2, fs, kf2);
+[msg_rc] = fm_demod(msg_rx, fc2, fs, kf2)
 
 %% PART 3: Radio-frequency Spectrum Measurements
 
