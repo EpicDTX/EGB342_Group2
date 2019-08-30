@@ -138,19 +138,21 @@ xlim([0 72]) % Range of msg signal
 
 %% 2d) - Estimate bandwidth
 
+% Frequency Vector
 f2 = linspace(-fs/2, fs/2, length(t2)+1);
 f2(end) = [];
 
-MSG = fft(msg);
+% Ploting the signal in the Frequency domain
+MSG = abs(fftshift(fft(msg)))/fs;
 figure
 subplot(2, 1, 1)
-plot(f2, abs(fftshift(MSG))/fs,'r')
+plot(f2,MSG,'r')
 xlabel('Frequency[Hz]') 
 ylabel('Magnitude')
 title('Magnitude Spectrum of MSG')
 xlim([-1000 1000])
 subplot(2, 1, 2)
-plot(f2, abs(fftshift(MSG))/fs,'r')
+plot(f2, MSG,'r')
 xlabel('Frequency[Hz]') 
 ylabel('Magnitude')
 title('Magnitude Spectrum of MSG (last peak)')
@@ -174,8 +176,10 @@ MSG_PULSE = abs(fftshift(fft(msg_pulse)))/fs;
 
 figure, clf                 
 plot(f2, MSG_PULSE)      
-title('Frequency Response of Channel')%, grid minor
-xlabel('Frequency (Hz)'), ylabel('Amplitude')
+title('Frequency Response of Channel')
+grid minor
+xlabel('Frequency[Hz]')
+ylabel('Amplitude')
 
 % the bandwith from the positive side is estimated to be 7633 and 1.648e4
 % therefore the bandwidth is 8847 Hz
@@ -202,7 +206,8 @@ fc2 = 1.2057e4;%Hz
 beta2 = (BW_EST - 2*BW_MSG)/(2*BW_MSG);
 
 %% 2g) - Theoretical bandwidth and peak frequency
-kf2 = beta2*BW_MSG;
+
+kf2 = (beta2*BW_MSG)/max(msg); %200?
 BW_FM = 2*(beta2 + 1)*BW_MSG;
 
 %% 2j) - Apply fm_mod
@@ -211,9 +216,10 @@ BW_FM = 2*(beta2 + 1)*BW_MSG;
 
 %% 2k) - Modulated signal in time/frequency domain
 
+% Fourier transformed modulated msg
 MSG_TX = abs(fftshift(fft(msg_tx)))/fs;
 
-%Check on this - dont think this is right
+% Plotting the results
 figure
 subplot(2,1,1)
 plot(t2, msg_tx)
@@ -226,41 +232,70 @@ title("Modulated msg in Frequency Domain")
 xlabel("Frequency[Hz]")
 ylabel("Magnitude")
 
+figure
+plot(f2,MSG_TX)
+title("Positive Modulated msg in Frequency Domain")
+xlabel("Frequency[Hz]")
+ylabel("Magnitude")
+xlim([0 2.2e4])
+
+figure
+subplot(2,1,1)
+plot(t2, msg)
+hold on
+plot(t2, msg_tx)
+hold off
+title("Unmodulated msg vs Modulated msg [Time Domain]")
+xlabel("Time[s]")
+ylabel("Amplitude")
+legend('Unmodulated Signal', 'Modulated Signal')
+subplot(2,1,2)
+plot(f2, MSG)
+hold on
+plot(f2, MSG_TX)
+hold off
+title("Unmodulated msg vs Modulated msg [Frequency Domain]")
+xlabel("Frequency[Hz]")
+ylabel("Magnitude")
+legend('Unmodulated Signal', 'Modulated Signal')
+ylim([0 70])
+xlim([-2e4 2e4])
+
+%Zoomed in frequency response
+figure
+plot(f2, MSG)
+hold on
+plot(f2, MSG_TX)
+hold off
+title("Unmodulated msg vs Modulated msg [Frequency Domain]")
+xlabel("Frequency[Hz]")
+ylabel("Magnitude")
+legend('Unmodulated Signal', 'Modulated Signal')
+ylim([0 1.5])
+xlim([-2e4 2e4])
+
 %% 2l) - Verify signal within frequency band
 
+% Plot and verify the signal is within the selected frequency band. Comment
+% on any out-of-band radiation and discuss any measures to take in order to
+% remove the out-band-radiation.
+
+figure
+plot(f2,MSG_PULSE)
+hold on
+plot(f2,MSG_TX)
+hold off
+title('FM Signal [Frequency Domain]')
+xlabel("Frequency[Hz]")
+ylabel("Magnitude")
+legend('Frequency Response [msg tx]', 'Modulated Signal')
 
 %% 2m) - Transmit modulated signal
-
-% [msg_rx] = channel(msg_tx);
+[msg_rx] = channel(msg_tx);
 
 %% 2o) - Demodulate signal
-
-% [msg_rc] = fm_demod(msg rx, fc2, fs, kf2);
+[msg_rc] = fm_demod(msg_rx, fc2, fs, kf2);
 
 %% PART 3: Radio-frequency Spectrum Measurements
-%% 3a) - Function listen_fm
-
-% listen_fm(107.7);
-
-%% 3c) - Spectrum analyser
 
 % see spectrum_analyser.m
-
-%% 3d) - Number of samples per frame effects
-
-% FM analog radio transmission case
-
-start_freq = 87.5e6;
-stop_freq = 108e6;
-rtlsdr_fs = 3.2e6;
-
-number_samples1 = 2^17;
-number_samples2 = 2^10;
-number_samples3 = 2^4;
-
-%% let n = 17
-spectrum_sweep(start_freq, stop_freq, rtlsdr_fs, number_samples1,'FM, n = 17');
-%% let n = 9
-spectrum_sweep(start_freq, stop_freq, rtlsdr_fs, number_samples2,'FM, n = 10');
-%% let n = 3
-spectrum_sweep(start_freq, stop_freq, rtlsdr_fs, number_samples3,'FM, n = 3');
