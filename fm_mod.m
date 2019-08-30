@@ -14,10 +14,10 @@ t = linspace(0, Ts, length(msg)+1);
 t(end) = [];
 
 % Integral term
-msg_int = cumsum(msg)*Ts;
+msg_int = cumsum(msg)./fs;
 
 % Modulated signal output
-msg_tx = Ac*cos(2*pi*fc2*t + 2*pi*kf2*msg_int);
+msg_tx = Ac * cos(2 * pi * fc2 * t + 2 * pi * kf2 * msg_int);
 
 end
 

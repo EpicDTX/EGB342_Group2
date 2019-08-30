@@ -22,6 +22,15 @@
 %   viewing
 % - NOTE: to end simulation early, use |Ctrl| + |C|
 
+%==========================================================================
+% Enter your code below this line:
+%==========================================================================
+
+%% 3a) - Function listen_fm
+
+% listen_fm(107.7);
+
+%% 3c) - Spectrum analyser
 %% 1. FM analog radio transmission
 start_freq = 87.5e6;
 stop_freq = 108e6;
@@ -61,3 +70,21 @@ rtlsdr_fs = 3.2e6;
 number_samples = 2^17;
 
 spectrum_sweep(start_freq, stop_freq, rtlsdr_fs, number_samples, 'GWN');
+
+%% 3d) - Number of samples per frame effects
+
+% FM analog radio transmission case
+start_freq = 87.5e6;
+stop_freq = 108e6;
+rtlsdr_fs = 3.2e6;
+
+number_samples1 = 2^17;
+number_samples2 = 2^10;
+number_samples3 = 2^4;
+
+%% let n = 17
+spectrum_sweep(start_freq, stop_freq, rtlsdr_fs, number_samples1,'FM, n = 17');
+%% let n = 9
+spectrum_sweep(start_freq, stop_freq, rtlsdr_fs, number_samples2,'FM, n = 10');
+%% let n = 3
+spectrum_sweep(start_freq, stop_freq, rtlsdr_fs, number_samples3,'FM, n = 3');
