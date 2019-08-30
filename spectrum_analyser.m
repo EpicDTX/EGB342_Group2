@@ -10,7 +10,10 @@
 %   "number_samples" is the number of sample to be collected for each FFT
 %   calculations. 
 
-%   spectrum_scan_original(start_freq, stop_freq, rtlsdr_fs, number_samples, location);
+
+%spectrum_scan_original(start_freq,start_freq,rtlsdr_fs, number_samples, location);
+
+% spectrum_sweep(750e6,800e6,3.2e6, 2^14,'Brisbane')
 
 %   e.g. spectrum_scan_original(750e6,800e6,3.2e6, 2^14,'Brisbane');
 %
@@ -26,48 +29,43 @@
 % Enter your code below this line:
 %==========================================================================
 
+%% PART 3: Radio-frequency Spectrum Measurements
+
 %% 3a) - Function listen_fm
 
-% listen_fm(107.7);
+% listen_fm(208);
 
 %% 3c) - Spectrum analyser
+rtlsdr_fs = 3.2e6;
+number_samples = 2^17;
+
 %% 1. FM analog radio transmission
 start_freq = 87.5e6;
 stop_freq = 108e6;
-rtlsdr_fs = 3.2e6;
-number_samples = 2^17;
 
 spectrum_sweep(start_freq, stop_freq, rtlsdr_fs, number_samples,'FM analog radio transmission');
 
 %% 2. Digital Audio Broadcasting (DAB)
 start_freq = 202e6;
 stop_freq = 209e6;
-rtlsdr_fs = 3.2e6;
-number_samples = 2^17;
 
 spectrum_sweep(start_freq, stop_freq, rtlsdr_fs, number_samples, 'Digital Audio Broadcasting (DAB)');
 
 %% 3. Digital Video Broadcasting (DVB)
 start_freq = 520e6;
 stop_freq = 694e6;
-rtlsdr_fs = 3.2e6;
-number_samples = 2^17;
 
 spectrum_sweep(start_freq, stop_freq, rtlsdr_fs, number_samples, 'Digital Video Broadcasting (DVB)');
 
 %% 4. Mobile Frequencies
-start_freq = 820e6;
-stop_freq = 960e6;
-rtlsdr_fs = 3.2e6;
-number_samples = 2^17;
+start_freq = 9.35e8;
+stop_freq = 9.6e8;
 
 spectrum_sweep(start_freq, stop_freq, rtlsdr_fs, number_samples, 'Mobile Frequencies');
 
 %% 5. Queensland Government Wireless Network (GWN)
 start_freq = 420e6;
 stop_freq = 430e6;
-rtlsdr_fs = 3.2e6;
-number_samples = 2^17;
 
 spectrum_sweep(start_freq, stop_freq, rtlsdr_fs, number_samples, 'GWN');
 
@@ -76,7 +74,6 @@ spectrum_sweep(start_freq, stop_freq, rtlsdr_fs, number_samples, 'GWN');
 % FM analog radio transmission case
 start_freq = 87.5e6;
 stop_freq = 108e6;
-rtlsdr_fs = 3.2e6;
 
 number_samples1 = 2^17;
 number_samples2 = 2^10;
