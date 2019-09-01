@@ -69,13 +69,12 @@ Am = 1;          % Message amplitude
 
 % FM Modulation
 m1 = Am*cos(2*pi*fm*t1);                     % Message signal
-x_int = cumsum(m1)./fs1;                     % Integral term
-y1 = Ac*cos(2*pi*fc1*t1+2*pi*kf1*x_int);     % Modulated signal
+m1_int = cumsum(m1)./fs1;                    % Integral term
+y1 = Ac*cos(2*pi*fc1*t1+2*pi*kf1*m1_int);    % Modulated signal
 Y1 = fft(y1);                                % Modulated signal (FT)
 
 % Plot modulated signal
-figure, clf
-subplot(1,2,1)
+figure
 stem(f1, abs(fftshift(Y1))/fs1, 'Marker', '.')
 title('Modulated Signal Y1 in Frequency Domain')
 xlabel('Frequency[Hz]')
@@ -85,44 +84,13 @@ ylabel('Magnitude')
 Df1 = kf1*Am;           % Frequency deviation
 beta1 = (kf1*Am)/fm;    % Modulation index
 
-%% 1c) - Sidebands
-
-R = 1;                % Assume R = 1 Ohm
-P_total = Ac^2/(2*R); % 50W
-P_carrier = (Ac*besselj(0, beta1))^2/(2*R);
-P_sbtotal = P_total - P_carrier;
-
-P_sb = 0; Num_sb = 0; efficiency = 0; % Initialise
-while efficiency <= 0.98  
-    Num_sb = Num_sb + 1;
-    P_sb = P_sb + ((Ac*besselj(Num_sb,beta1))^2)/R;
-    efficiency = P_sb/P_sbtotal;
-end
-
-%% 1d) - Magnitude spectrum
-
-y1_selected = 0; % Intialise 
-for n = -Num_sb:1:Num_sb
-    y1_selected = y1_selected + Ac*besselj(n,beta1)*cos(2*pi*(fc1 + n*fm)*t1);
-end
-
-% Plot filtered signal
-Y1_selected = fft(y1_selected);
-subplot(1,2,2)
-stem(f1,abs(fftshift(Y1_selected))/fs1, 'Marker', '.')
-title('Frequency modulated signal Y1 - selected harmonics')
-xlabel('Frequency[Hz]'), ylabel('Magnitude')
-
-
 %% 1e) - Estimate bandwidth of modulated signal
-
 BW_Theory = 2*(beta1 + 1)*fm;   % Theoretical bandwidth
-BW_Estimate = obw(y1,fs1);      % Bandwidth estimation 
 
 %% PART 2: FM Training
 %% 2c) - Inspect testing signal
 
-% Time vector
+% Time vector 
 t2 = linspace(0,length(msg)/fs, length(msg)+1); %72 seconds
 t2(end) = [];
 
@@ -165,18 +133,20 @@ BW_MSG = 705; %Hz
 
 % Empty signal vector
 pulse = zeros(1, length(msg));
+
 % Pulse of frame 1
 pulse(1) = 1;
+
 % channel.p applied
 [msg_pulse] = channel(pulse);
-% Clean 
-MSG_PULSE = abs(fftshift(fft(msg_pulse)))/fs;
 
-figure, clf                 
+% Clean 
+MSG_PULSE = abs(fftshift(fft(msg_pulse)));
+
+figure              
 plot(f2, MSG_PULSE)      
 title('Frequency Response of Channel')
-grid minor
-xlabel('Frequency[Hz]')
+xlabel('Frequency (Hz)')
 ylabel('Amplitude')
 
 % the bandwith from the positive side is estimated to be 7633 and 1.648e4
@@ -204,8 +174,7 @@ fc2 = 1.2057e4;%Hz
 beta2 = (BW_EST - 2*BW_MSG)/(2*BW_MSG);
 
 %% 2g) - Theoretical bandwidth and peak frequency
-
-kf2 = (beta2*BW_MSG)/max(msg); %200?
+kf2 = (beta2*BW_MSG)/max(msg); 
 BW_FM = 2*(beta2 + 1)*BW_MSG;
 
 %% 2j) - Apply fm_mod
