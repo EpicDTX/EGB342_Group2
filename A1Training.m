@@ -228,7 +228,7 @@ legend('Unmodulated Signal', 'Modulated Signal')
 ylim([0 70])
 xlim([-2e4 2e4])
 
-%Zoomed in frequency response
+%Zoomed in frequency domain
 figure
 plot(f2, MSG)
 hold on
@@ -240,6 +240,7 @@ ylabel("Magnitude")
 legend('Unmodulated Signal', 'Modulated Signal')
 ylim([0 1.5])
 xlim([-2e4 2e4])
+
 
 %% 2l) - Verify signal within frequency band
 
